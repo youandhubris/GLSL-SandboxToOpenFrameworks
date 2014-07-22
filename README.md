@@ -1,4 +1,4 @@
-## Space
+## From GLSL Sandbox to openFrameworks
 
 BY [HUBRIS](http://cargocollective.com/hubris "See more of Hubris ->")  
 BERLIN · JULY 2014 
