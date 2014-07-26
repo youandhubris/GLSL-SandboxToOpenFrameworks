@@ -21,6 +21,7 @@ uniform sampler2D iChannel1; // Texture #2
 uniform sampler2D iChannel2; // Texture #3
 uniform sampler2D iChannel3; // Texture #4
 vec2 surfacePosition = gl_FragCoord.xy / resolution.xy;
+uniform sampler2D backbuffer;
 
 // --> GLSL Sandbox code
 //Made by Jordan Duty(AKA djdduty) May 14, 2014.
@@ -59,8 +60,8 @@ vec3 universeFractal(vec2 surfacePos) {
 	vec3 from=vec3(0.,0.,0.);
 	from+=vec3(.001*time,.001*time,-2.);
 	
-	from.x-=mouse.x;
-	from.y-=mouse.y;
+	//from.x-=mouse.x;
+	//from.y-=mouse.y;
 	
 	from.xz*=rot1;
 	from.xy*=rot2;
@@ -422,7 +423,7 @@ void main(void)
 	
 	float invWidth = 1.0 / resolution.x;
 	float invHeight = 1.0 / resolution.y;
-	float fov = 60.0;
+	float fov = 60;
 	float aspectratio = resolution.x/resolution.y;
 	float angle = tan(M_PI * 0.5 * fov / 180.0);
 	
