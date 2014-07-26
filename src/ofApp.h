@@ -33,5 +33,7 @@ class ofApp : public ofBaseApp{
     
     ofShader glslsandbox;
     ofImage color_noise, gray_rock, shell, vulcanic_rock;
+    float time;
+
 		
 };

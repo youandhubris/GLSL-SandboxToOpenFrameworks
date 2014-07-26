@@ -24,16 +24,24 @@ void ofApp::draw(){
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
+    time += 0.001;
+    
     glslsandbox.begin();
     glslsandbox.setUniform2f("resolution", ofGetWidth(), ofGetHeight());
-    glslsandbox.setUniform1f("time", ofGetElapsedTimef());
-    glslsandbox.setUniform2f("mouse", mouseX, mouseY);
+    glslsandbox.setUniform1f("time", time);
+    glslsandbox.setUniform2f("mouse", (float)mouseX / ofGetWidth(), (float)mouseY / ofGetHeight());
     glslsandbox.setUniformTexture("iChannel0", color_noise, 1);
     glslsandbox.setUniformTexture("iChannel1", gray_rock, 2);
     glslsandbox.setUniformTexture("iChannel2", shell, 3);
     glslsandbox.setUniformTexture("iChannel3", vulcanic_rock, 4);
     
-    ofRect(0, 0, ofGetWidth(), ofGetHeight());
+    //ofRect(0, 0, ofGetWidth(), ofGetHeight());
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,0); glVertex3f(0,0,0);
+    glTexCoord2f(1,0); glVertex3f(ofGetWidth(),0,0);
+    glTexCoord2f(1,1); glVertex3f(ofGetWidth(),ofGetHeight(),0);
+    glTexCoord2f(0,1); glVertex3f(0,ofGetHeight(),0);
+    glEnd();
     
     glslsandbox.end();
     
