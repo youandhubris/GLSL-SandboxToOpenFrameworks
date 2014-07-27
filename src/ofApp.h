@@ -34,7 +34,6 @@ class ofApp : public ofBaseApp{
     ofShader glslsandbox;
     ofFbo fbo, backFbo;
     ofImage color_noise, gray_rock, shell, vulcanic_rock;
-    ofVideoPlayer lady;
     float time;
 
 		
