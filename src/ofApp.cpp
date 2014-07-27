@@ -4,6 +4,7 @@
 void ofApp::setup(){
     
     ofDisableArbTex();
+    ofSetBackgroundColor(0, 0, 0);
     
     glslsandbox.load("shader/glslsandbox");
     
@@ -12,20 +13,27 @@ void ofApp::setup(){
     shell.loadImage("textures/shell.jpg");
     vulcanic_rock.loadImage("textures/vulcanic_rock.jpg");
     
+    fbo.allocate(ofGetWidth(), ofGetHeight());
+    fbo.begin();
+    ofClear(255, 255, 255);
+    fbo.end();
+    
+    backFbo.allocate(ofGetWidth(), ofGetHeight());
+    backFbo.begin();
+    ofClear(255, 255, 255);
+    backFbo.end();
+
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
-}
-
-//--------------------------------------------------------------
-void ofApp::draw(){
-    
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
-    time += 0.001;
+    time += 0.05;
     
+    //---> Output buffer
+    fbo.begin();
     glslsandbox.begin();
     glslsandbox.setUniform2f("resolution", ofGetWidth(), ofGetHeight());
     glslsandbox.setUniform1f("time", time);
@@ -34,26 +42,37 @@ void ofApp::draw(){
     glslsandbox.setUniformTexture("iChannel1", gray_rock, 2);
     glslsandbox.setUniformTexture("iChannel2", shell, 3);
     glslsandbox.setUniformTexture("iChannel3", vulcanic_rock, 4);
-    
-    //ofRect(0, 0, ofGetWidth(), ofGetHeight());
-    glBegin(GL_QUADS);
-    glTexCoord2f(0,0); glVertex3f(0,0,0);
-    glTexCoord2f(1,0); glVertex3f(ofGetWidth(),0,0);
-    glTexCoord2f(1,1); glVertex3f(ofGetWidth(),ofGetHeight(),0);
-    glTexCoord2f(0,1); glVertex3f(0,ofGetHeight(),0);
-    glEnd();
-    
+    glslsandbox.setUniformTexture("backbuffer", backFbo.getTextureReference(), 5);
+    ofSetColor(255, 255, 255);
+    ofRect(0, 0, ofGetWidth(), ofGetHeight());
     glslsandbox.end();
+    fbo.end();
+    
+    
+    //---> Backbuffer
+    backFbo.begin();
+    ofSetColor(255, 255, 255);
+    fbo.draw(0, 0);
+    backFbo.end();
     
     /* TO DO
-    NEW: This 'uniform' vec2 indicates the size of the visible area of the virtual surface.
-    uniform vec2 surfaceSize;
+     NEW: This 'uniform' vec2 indicates the size of the visible area of the virtual surface.
+     uniform vec2 surfaceSize;
      */
     
 }
 
 //--------------------------------------------------------------
+void ofApp::draw(){
+    
+    ofSetColor(255, 255, 255);
+    fbo.draw(0, 0);
+    
+}
+
+//--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    
 
 }
 
@@ -64,6 +83,7 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
+    
 
 }
 
